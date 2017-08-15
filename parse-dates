@@ -1,0 +1,82 @@
+local re = require "re"
+local J = require "cjson"
+
+local input = string.lower(table.concat(arg, " "))
+
+local date_pattern = re.compile [[
+
+	range <- {| date ( %s* ',' %s* date )^-1 {:consumed: {} :} |}
+
+	date <- {|
+		(
+			{:en: 'yesterday' / 'today' / 'tomorrow' :}
+			/
+			{:day: {|
+				{:sign: ( 'this' / 'next' / 'last' )^-1 :}
+				%s* ( {:len: %d+ :} ordinal_suffix^-1 )^-1
+				%s* day_en
+			|} :}
+			/
+			{:date_abs: {| date_ymd / date_en |} :}
+		)^-1
+
+		(
+			%s*
+			{:interval: {|
+				{:sign: [+-] :}
+				%s* {:len: %d+ :}
+				%s* {:unit: {'d'}'ay'^-1 / {'w'}'eek'^-1 / {'m'}'onth'^-1 / {'y'}'ear'^-1 :} 's'^-1
+			|} :}
+		)^-1
+	|}
+
+	date_ymd <-
+		( year [-/] )^-1
+		{:mon_num: '1'[012] / '0'^-1[1-9] :}
+		[-/] day_num
+
+	date_en <- ( mon_en %s+ day_num / day_num %s+ mon_en ) (%s+ year)^-1
+
+	year <- {:year: %d^4 :}
+
+	mon_en <- {:mon_en:
+		  { 'jan' } 'uary'   ^-1
+		/ { 'feb' } 'ruary'  ^-1
+		/ { 'mar' } 'ch'     ^-1
+		/ { 'apr' } 'il'     ^-1
+		/ { 'may' }
+		/ { 'jun' } 'e'      ^-1
+		/ { 'jul' } 'y'      ^-1
+		/ { 'aug' } 'ust'    ^-1
+		/ { 'sep' } 'tember' ^-1
+		/ { 'oct' } 'ober'   ^-1
+		/ { 'nov' } 'ember'  ^-1
+		/ { 'dec' } 'ember'  ^-1
+	:}
+
+	day_num <-
+		{:day_num: [12][0-9] / [3][01] / [0]^-1[1-9] :}
+		ordinal_suffix^-1
+
+	ordinal_suffix <-
+		 'st' / 'nd' / 'rd' / 'th'
+
+	day_en <- {:day_en:
+		  { 'sun' } 'day'    ^-1
+		/ { 'mon' } 'day'    ^-1
+		/ { 'tue' } 'sday'   ^-1
+		/ { 'wed' } 'nesday' ^-1
+		/ { 'thu' } 'rsday'  ^-1
+		/ { 'fri' } 'day'    ^-1
+		/ { 'sat' } 'urday'  ^-1
+	:}
+
+]]
+
+local match = date_pattern:match(input)
+
+if (#input ~= match['consumed'] - 1) then
+	io.stderr:write('Trying: ' .. input:sub(1, match['consumed'] -1).. '\n')
+end
+
+print (J.encode(match))
