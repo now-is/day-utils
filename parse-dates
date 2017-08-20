@@ -73,10 +73,70 @@ local date_pattern = re.compile [[
 
 ]]
 
-local match = date_pattern:match(input)
+local normalize = {
+	consumed = function (mm, input)
+		if (#input ~= mm['consumed'] - 1) then
+			io.stderr:write('Trying: ' .. input:sub(1, mm['consumed'] -1).. '\n')
+		end
+		mm['consumed'] = nil
+	end,
 
-if (#input ~= match['consumed'] - 1) then
-	io.stderr:write('Trying: ' .. input:sub(1, match['consumed'] -1).. '\n')
+	range = function (mm)
+		if mm[2] == nil then
+			mm[2] = mm[1]
+		end
+	end,
+
+	date = function (m)
+		if m['_time'] then
+			return
+		end
+		if m['en'] == nil and m['day'] == nil and m['date_abs'] == nil then
+			m['en'] = 'today'
+		end
+	end,
+
+	en = function (m)
+		if m['en'] == nil then
+			return
+		end
+
+		if m['en'] == 'today' then
+			m['_time'] = os.time()
+		elseif m['en'] == 'yesterday' then
+			m['_time'] = os.time() - 86400
+		elseif m['en'] == 'tomorrow' then
+			m['_time'] = os.time() + 86400
+		end
+		m['en'] = nil
+	end,
+
+	day = function (m)
+	end,
+
+	interval = function (m)
+	end,
+
+	date_abs = function (m)
+	end,
+
+	date_en = function (m)
+	end,
+
+}
+
+local match = date_pattern:match(input)
+normalize['consumed'](match, input)
+normalize['range'](match)
+
+for i = 1,2 do
+	normalize['date'](match[i])
+	normalize['en'](match[i])
+	normalize['day'](match[i])
+	normalize['date_en'](match[i])
+	normalize['date_abs'](match[i])
+	normalize['interval'](match[i])
 end
 
 print (J.encode(match))
+
