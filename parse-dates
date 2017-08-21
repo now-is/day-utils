@@ -84,6 +84,9 @@ local normalize = {
 	range = function (mm)
 		if mm[2] == nil then
 			mm[2] = mm[1]
+			return false
+		else
+			return true
 		end
 	end,
 
@@ -126,16 +129,16 @@ local normalize = {
 }
 
 local match = date_pattern:match(input)
-normalize['consumed'](match, input)
-normalize['range'](match)
 
-for i = 1,2 do
-	normalize['date'](match[i])
-	normalize['en'](match[i])
-	normalize['day'](match[i])
-	normalize['date_en'](match[i])
-	normalize['date_abs'](match[i])
-	normalize['interval'](match[i])
+normalize['consumed'](match, input)
+
+local different = normalize['range'](match)
+
+for k,v in pairs({ 'date', 'en', 'day', 'date_en', 'date_abs', 'interval' }) do
+	normalize[v](match[1])
+	if different then
+		normalize[v](match[2])
+	end
 end
 
 print (J.encode(match))
