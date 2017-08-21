@@ -88,7 +88,7 @@ local normalize = {
 	end,
 
 	date = function (m)
-		if m['_time'] then
+		if m['_date'] then
 			return
 		end
 		if m['en'] == nil and m['day'] == nil and m['date_abs'] == nil then
@@ -101,12 +101,12 @@ local normalize = {
 			return
 		end
 
-		if m['en'] == 'today' then
-			m['_time'] = os.time()
-		elseif m['en'] == 'yesterday' then
-			m['_time'] = os.time() - 86400
+		m['_date'] = os.date('*t')
+
+		if m['en'] == 'yesterday' then
+			m['_date']['day'] = m['_date']['day'] - 1
 		elseif m['en'] == 'tomorrow' then
-			m['_time'] = os.time() + 86400
+			m['_date']['day'] = m['_date']['day'] + 1
 		end
 		m['en'] = nil
 	end,
