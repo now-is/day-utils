@@ -19,7 +19,7 @@ local date_pattern = R.compile [[
 				%s* day_en
 			|} :}
 			/
-			{:date_abs: {| date_ymd / date_en |} :}
+			date_ymd / date_en
 		)^-1
 
 		(
@@ -32,12 +32,15 @@ local date_pattern = R.compile [[
 		)^-1
 	|}
 
-	date_ymd <-
+	date_ymd <- {:date_ymd: {|
 		( year [-/] )^-1
 		{:mon_num: '1'[012] / '0'^-1[1-9] :}
 		[-/] day_num
+	|} :}
 
-	date_en <- ( mon_en %s+ day_num / day_num %s+ mon_en ) (%s+ year)^-1
+	date_en <- {:date_en: {|
+		( mon_en %s+ day_num / day_num %s+ mon_en ) (%s+ year)^-1
+	|} :}
 
 	year <- {:year: %d^4 :}
 
