@@ -17,6 +17,16 @@ local Month = {
 	dec = 12,
 }
 
+local Day = {
+	sun = 1,
+	mon = 2,
+	tue = 3,
+	wed = 4,
+	thu = 5,
+	fri = 6,
+	sat = 7,
+}
+
 local input = string.lower(table.concat(arg, " "))
 
 local date_pattern = R.compile [[
@@ -143,7 +153,29 @@ local normalize = {
 		end
 
 		m._date = os.date('*t')
-		m.day = nil
+		local target, today = Day[m.day.day_en], m._date.wday
+
+		-- we want to add delta days
+		local delta = target - today
+		if delta < 0 then delta = delta + 7 end
+
+		if m.day.sign == 'last' then
+			delta = delta - 7
+			if m.day.len then
+				delta = delta - 7 * (m.day.len - 1)
+			end
+		else
+			-- on a friday, "next friday" is a week away
+			if target == today and m.day.sign == 'next' then
+				delta = 7
+			end
+			if m.day.len then
+				delta = delta + 7 * (m.day.len - 1)
+			end
+		end
+
+		m._message = 'adding ' .. delta .. ' days'
+		-- m.day = nil
 	end,
 
 	interval = function (m)
