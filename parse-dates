@@ -94,15 +94,15 @@ local date_pattern = R.compile [[
 
 local normalize = {
 	consumed = function (mm, input)
-		if #input ~= mm['consumed'] - 1 then
-			if mm['consumed'] == 1 then
+		if #input ~= mm.consumed - 1 then
+			if mm.consumed == 1 then
 				io.stderr:write('Giving up.\n')
 				os.exit(-1)
 			else
-				io.stderr:write('Trying "' .. input:sub(1, mm['consumed'] -1) .. '"\n')
+				io.stderr:write('Trying "' .. input:sub(1, mm.consumed -1) .. '"\n')
 			end
 		end
-		mm['consumed'] = nil
+		mm.consumed = nil
 	end,
 
 	range = function (mm)
@@ -115,73 +115,78 @@ local normalize = {
 	end,
 
 	date = function (m)
-		if m['_date'] then
-			return
-		end
-		if m['en'] == nil and m['day'] == nil and m['date_abs'] == nil then
-			m['en'] = 'today'
+		if m._date then return end
+
+		if m.en == nil and m.day == nil and m.date_abs == nil then
+			m.en = 'today'
 		end
 	end,
 
 	en = function (m)
-		if m['en'] == nil then
+		if m.en == nil then
 			return
 		end
 
-		m['_date'] = os.date('*t')
+		m._date = os.date('*t')
 
-		if m['en'] == 'yesterday' then
-			m['_date']['day'] = m['_date']['day'] - 1
-		elseif m['en'] == 'tomorrow' then
-			m['_date']['day'] = m['_date']['day'] + 1
+		if m.en == 'yesterday' then
+			m._date.day = m._date.day - 1
+		elseif m.en == 'tomorrow' then
+			m._date.day = m._date.day + 1
 		end
-		m['en'] = nil
+		m.en = nil
 	end,
 
 	day = function (m)
+		if m.day == nil then
+			return
+		end
+
+		m._date = os.date('*t')
+		m.day = nil
 	end,
 
 	interval = function (m)
 	end,
 
 	date_ymd = function (m)
-		if m['date_ymd'] == nil then
+		if m.date_ymd == nil then
 			return
 		end
 
-		m['_date'] = os.date('*t')
-		local d, _d = m['date_ymd'], m['_date']
+		m._date = os.date('*t')
+		local d, _d = m.date_ymd, m._date
 		_d.day = d.day_num
 		_d.month = d.mon_num
 		_d.year = d.year
 
-		m['date_ymd'] = nil
+		m.date_ymd = nil
 	end,
 
 	date_en = function (m)
-		if m['date_en'] == nil then
+		if m.date_en == nil then
 			return
 		end
 
-		m['_date'] = os.date('*t')
+		m._date = os.date('*t')
 
-		local d, _d = m['date_en'], m['_date']
+		local d, _d = m.date_en, m._date
 		_d.day = d.day_num
 		_d.month = Month[d.mon_en]
 		if d.year then
 			_d.year = d.year
 		end
 
-		m['date_en'] = nil
+		m.date_en = nil
 	end,
 
 }
 
 local match = date_pattern:match(input)
 
-normalize['consumed'](match, input)
+normalize.consumed(match, input)
 
-local different = normalize['range'](match)
+local different = normalize.range(match)
 
 for k,v in pairs({ 'date', 'en', 'day', 'date_en', 'date_ymd', 'interval' }) do
 	normalize[v](match[1])
