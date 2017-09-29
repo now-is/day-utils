@@ -1,9 +1,11 @@
-local re = require "re"
+#!/usr/bin/env luajit
+
+local R = require "re"
 local J = require "cjson"
 
 local input = string.lower(table.concat(arg, " "))
 
-local date_pattern = re.compile [[
+local date_pattern = R.compile [[
 
 	range <- {| date ( %s* ',' %s* date )^-1 {:consumed: {} :} |}
 
