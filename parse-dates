@@ -144,7 +144,18 @@ local normalize = {
 	interval = function (m)
 	end,
 
-	date_abs = function (m)
+	date_ymd = function (m)
+		if m['date_ymd'] == nil then
+			return
+		end
+
+		m['_date'] = os.date('*t')
+		local d, _d = m['date_ymd'], m['_date']
+		_d.day = d.day_num
+		_d.month = d.mon_num
+		_d.year = d.year
+
+		m['date_ymd'] = nil
 	end,
 
 	date_en = function (m)
@@ -172,7 +183,7 @@ normalize['consumed'](match, input)
 
 local different = normalize['range'](match)
 
-for k,v in pairs({ 'date', 'en', 'day', 'date_en', 'date_abs', 'interval' }) do
+for k,v in pairs({ 'date', 'en', 'day', 'date_en', 'date_ymd', 'interval' }) do
 	normalize[v](match[1])
 	if different then
 		normalize[v](match[2])
