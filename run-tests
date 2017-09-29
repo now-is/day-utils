@@ -1,0 +1,13 @@
+cat tests | while read l
+do
+	echo $l
+	./parse-dates $l 2>&1
+	echo
+done > test-results-new
+
+if (cmp test-results test-results-new > /dev/null)
+then
+	rm test-results-new
+else
+	git diff --no-index test-results test-results-new
+fi
