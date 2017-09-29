@@ -77,8 +77,13 @@ local date_pattern = R.compile [[
 
 local normalize = {
 	consumed = function (mm, input)
-		if (#input ~= mm['consumed'] - 1) then
-			io.stderr:write('Trying: ' .. input:sub(1, mm['consumed'] -1).. '\n')
+		if #input ~= mm['consumed'] - 1 then
+			if mm['consumed'] == 1 then
+				io.stderr:write('Giving up.\n')
+				os.exit(-1)
+			else
+				io.stderr:write('Trying "' .. input:sub(1, mm['consumed'] -1) .. '"\n')
+			end
 		end
 		mm['consumed'] = nil
 	end,
