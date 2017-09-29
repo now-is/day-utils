@@ -102,6 +102,10 @@ local date_pattern = R.compile [[
 
 ]]
 
+local plus_days = function (dt, n)
+	return os.date("*t", os.time(dt) + n * 86400)
+end
+
 local normalize = {
 	consumed = function (mm, input)
 		if #input ~= mm.consumed - 1 then
@@ -152,8 +156,12 @@ local normalize = {
 			return
 		end
 
-		m._date = os.date('*t')
-		local target, today = Day[m.day.day_en], m._date.wday
+		if m._date then
+			return
+		end
+
+		local now = os.date('*t')
+		local target, today = Day[m.day.day_en], now.wday
 
 		-- we want to add delta days
 		local delta = target - today
@@ -175,7 +183,8 @@ local normalize = {
 		end
 
 		m._message = 'adding ' .. delta .. ' days'
-		-- m.day = nil
+		m._date = plus_days(now, delta)
+		m.day = nil
 	end,
 
 	interval = function (m)
