@@ -2,6 +2,20 @@
 
 local R = require "re"
 local J = require "cjson"
+local Month = {
+	jan = 1,
+	feb = 2,
+	mar = 3,
+	apr = 4,
+	may = 5,
+	jun = 6,
+	jul = 7,
+	aug = 8,
+	sep = 9,
+	oct = 10,
+	nov = 11,
+	dec = 12,
+}
 
 local input = string.lower(table.concat(arg, " "))
 
@@ -134,6 +148,20 @@ local normalize = {
 	end,
 
 	date_en = function (m)
+		if m['date_en'] == nil then
+			return
+		end
+
+		m['_date'] = os.date('*t')
+
+		local d, _d = m['date_en'], m['_date']
+		_d.day = d.day_num
+		_d.month = Month[d.mon_en]
+		if d.year then
+			_d.year = d.year
+		end
+
+		m['date_en'] = nil
 	end,
 
 }
