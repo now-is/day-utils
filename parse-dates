@@ -120,9 +120,8 @@ local normalize = {
 	end,
 
 	date = function (m)
-		if m.en == nil and m.day == nil and m.date_abs == nil then
-			m.en = 'today'
-		end
+		if m.en or m.day or m.date_abs then return end
+		m.en = 'today'
 	end,
 
 	en = function (m)
