@@ -119,18 +119,7 @@ local normalize = {
 		mm.consumed = nil
 	end,
 
-	range = function (mm)
-		if mm[2] == nil then
-			mm[2] = mm[1]
-			return false
-		else
-			return true
-		end
-	end,
-
 	date = function (m)
-		if m._date then return end
-
 		if m.en == nil and m.day == nil and m.date_abs == nil then
 			m.en = 'today'
 		end
@@ -153,10 +142,6 @@ local normalize = {
 
 	day = function (m)
 		if m.day == nil then
-			return
-		end
-
-		if m._date then
 			return
 		end
 
@@ -227,11 +212,9 @@ local match = date_pattern:match(input)
 
 normalize.consumed(match, input)
 
-local different = normalize.range(match)
-
 for k,v in pairs({ 'date', 'en', 'day', 'date_en', 'date_ymd', 'interval' }) do
 	normalize[v](match[1])
-	if different then
+	if match[2] then
 		normalize[v](match[2])
 	end
 end
