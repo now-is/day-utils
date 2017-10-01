@@ -236,18 +236,16 @@ if match[2] then
 	end
 end
 
+for _, f in pairs(normalize) do
+	f(match[1])
+end
+
 if interval_only then
-	for _, f in pairs(normalize) do
-		f(match[1])
-	end
 	match[2]._date = match[1]._date
 	normalize[6](match[2])
-else
+elseif match[2] then
 	for _, f in pairs(normalize) do
-		f(match[1])
-		if match[2] then
-			f(match[2])
-		end
+		f(match[2])
 	end
 end
 
