@@ -10,6 +10,15 @@ local month_by_name = {
 
 local day_by_name = { sun = 1, mon = 2, tue = 3, wed = 4, thu = 5, fri = 6, sat = 7 }
 
+local length_by_month = function (month, year)
+	local lengths = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }
+	if month == 2 and (((year % 4 == 0) and (year % 100 ~= 0)) or year % 400 == 0) then
+		return 29
+	else
+		return lengths[month]
+	end
+end
+
 local input = string.lower(table.concat(arg, " "))
 
 local date_pattern = R.compile [[
@@ -151,6 +160,36 @@ local normalize = {
 	end,
 
 	interval = function (m)
+		if not m.interval then return end
+
+		local delta = m.interval.len
+		if m.interval.sign == '-' then
+			delta = - delta
+		end
+
+		local unit = m.interval.unit
+		if unit == 'd' then
+			m._date = plus_days(m._date, delta)
+		elseif unit == 'w' then
+			m._date = plus_days(m._date, 7 * delta)
+		elseif unit == 'm' then
+			-- there is built-in date magic, but undocumented
+			local month = m._date.month + delta
+			local year =  m._date.year + math.floor(month / 12)
+			month = month % 12
+			if month == 0 then
+				month = 12
+				year = year - 1
+			end
+			if 0 + m._date.day > length_by_month(month, year) then
+				m._date.day = length_by_month(month, year)
+			end
+			m._date.month, m._date.year = month, year
+		elseif unit == 'y' then
+			m._date.year = m._date.year + delta
+		end
+
+		m.interval = nil
 	end,
 
 	date_ymd = function (m)
