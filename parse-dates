@@ -1,6 +1,6 @@
 #!/usr/bin/env luajit
 
-local R = require "re"
+local R = require 're'
 
 local month_by_name = {
 	jan = 1, feb = 2, mar = 3, apr = 4, may = 5, jun = 6,
@@ -92,7 +92,7 @@ local date_pattern = R.compile [[
 ]]
 
 local plus_days = function (dt, n)
-	return os.date("*t", os.time(dt) + n * 86400)
+	return os.date('*t', os.time(dt) + n * 86400)
 end
 
 local normalize = {
@@ -218,7 +218,7 @@ local normalize = {
 
 }
 
-local input = string.gsub(string.lower(table.concat(arg, " ")), ',', '')
+local input = string.gsub(string.lower(table.concat(arg, ' ')), ',', '')
 local match = date_pattern:match(input)
 
 normalize.consumed(match, input)
@@ -235,13 +235,13 @@ if match[2] then
 end
 
 if interval_only then
-	for k, v in pairs({ 'date', 'en', 'day', 'date_en', 'date_ymd', 'interval' }) do
+	for _, v in pairs({ 'date', 'en', 'day', 'date_en', 'date_ymd', 'interval' }) do
 		normalize[v](match[1])
 	end
 	match[2]._date = match[1]._date
 	normalize['interval'](match[2])
 else
-	for k, v in pairs({ 'date', 'en', 'day', 'date_en', 'date_ymd', 'interval' }) do
+	for _, v in pairs({ 'date', 'en', 'day', 'date_en', 'date_ymd', 'interval' }) do
 		normalize[v](match[1])
 		if match[2] then
 			normalize[v](match[2])
