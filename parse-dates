@@ -96,18 +96,6 @@ local plus_days = function (dt, n)
 end
 
 local normalize = {
-	consumed = function (mm, input)
-		if #input ~= mm.consumed - 1 then
-			if mm.consumed == 1 then
-				io.stderr:write('Giving up.\n')
-				os.exit(-1)
-			else
-				io.stderr:write('Trying "' .. input:sub(1, mm.consumed - 1) .. '"\n')
-			end
-		end
-		mm.consumed = nil
-	end,
-
 	date = function (m)
 		if m.en or m.day or m.date_abs then return end
 		m.en = 'today'
@@ -221,7 +209,15 @@ local normalize = {
 local input = string.gsub(string.lower(table.concat(arg, ' ')), ',', '')
 local match = date_pattern:match(input)
 
-normalize.consumed(match, input)
+if #input ~= match.consumed - 1 then
+	if match.consumed == 1 then
+		io.stderr:write('Giving up.\n')
+		os.exit(-1)
+	else
+		io.stderr:write('Trying "' .. input:sub(1, match.consumed - 1) .. '"\n')
+	end
+end
+match.consumed = nil
 
 local interval_only = false
 if match[2] then
