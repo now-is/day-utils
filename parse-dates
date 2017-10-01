@@ -19,11 +19,9 @@ local length_by_month = function (month, year)
 	end
 end
 
-local input = string.lower(table.concat(arg, " "))
-
 local date_pattern = R.compile [[
 
-	range <- {| date ( %s* ',' %s* date )^-1 {:consumed: {} :} |}
+	range <- {| date ( %s* '..' %s* date )^-1 {:consumed: {} :} |}
 
 	date <- {|
 		(
@@ -221,6 +219,7 @@ local normalize = {
 
 }
 
+local input = string.gsub(string.lower(table.concat(arg, " ")), ',', '')
 local match = date_pattern:match(input)
 
 normalize.consumed(match, input)
