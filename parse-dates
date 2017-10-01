@@ -96,12 +96,14 @@ local plus_days = function (dt, n)
 end
 
 local normalize = {
-	date = function (m)
+	-- date
+	function (m)
 		if m.en or m.day or m.date_abs then return end
 		m.en = 'today'
 	end,
 
-	en = function (m)
+	-- en
+	function (m)
 		if not m.en then return end
 
 		m._date = os.date('*t')
@@ -114,7 +116,8 @@ local normalize = {
 		m.en = nil
 	end,
 
-	day = function (m)
+	-- day
+	function (m)
 		if not m.day then return end
 
 		local now = os.date('*t')
@@ -144,7 +147,37 @@ local normalize = {
 		m.day = nil
 	end,
 
-	interval = function (m)
+	-- date_en
+	function (m)
+		if not m.date_en then return end
+
+		m._date = os.date('*t')
+
+		local d, _d = m.date_en, m._date
+		_d.day = d.day_num
+		_d.month = month_by_name[d.mon_en]
+		if d.year then
+			_d.year = d.year
+		end
+
+		m.date_en = nil
+	end,
+
+	-- date_ymd
+	function (m)
+		if not m.date_ymd then return end
+
+		m._date = os.date('*t')
+		local d, _d = m.date_ymd, m._date
+		_d.day = d.day_num
+		_d.month = d.mon_num
+		_d.year = d.year
+
+		m.date_ymd = nil
+	end,
+
+	-- interval
+	function (m)
 		if not m.interval then return end
 
 		local delta = m.interval.len
@@ -177,33 +210,6 @@ local normalize = {
 		m.interval = nil
 	end,
 
-	date_ymd = function (m)
-		if not m.date_ymd then return end
-
-		m._date = os.date('*t')
-		local d, _d = m.date_ymd, m._date
-		_d.day = d.day_num
-		_d.month = d.mon_num
-		_d.year = d.year
-
-		m.date_ymd = nil
-	end,
-
-	date_en = function (m)
-		if not m.date_en then return end
-
-		m._date = os.date('*t')
-
-		local d, _d = m.date_en, m._date
-		_d.day = d.day_num
-		_d.month = month_by_name[d.mon_en]
-		if d.year then
-			_d.year = d.year
-		end
-
-		m.date_en = nil
-	end,
-
 }
 
 local input = string.gsub(string.lower(table.concat(arg, ' ')), ',', '')
@@ -231,16 +237,16 @@ if match[2] then
 end
 
 if interval_only then
-	for _, v in pairs({ 'date', 'en', 'day', 'date_en', 'date_ymd', 'interval' }) do
-		normalize[v](match[1])
+	for _, f in pairs(normalize) do
+		f(match[1])
 	end
 	match[2]._date = match[1]._date
-	normalize['interval'](match[2])
+	normalize[6](match[2])
 else
-	for _, v in pairs({ 'date', 'en', 'day', 'date_en', 'date_ymd', 'interval' }) do
-		normalize[v](match[1])
+	for _, f in pairs(normalize) do
+		f(match[1])
 		if match[2] then
-			normalize[v](match[2])
+			f(match[2])
 		end
 	end
 end
