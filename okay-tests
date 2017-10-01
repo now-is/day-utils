@@ -1,1 +1,1 @@
-mv test-results-new test-results
+mv results-obtained results-expected

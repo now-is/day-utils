@@ -3,11 +3,11 @@ do
 	echo $l
 	./parse-dates $l 2>&1
 	echo
-done > test-results-new
+done > results-obtained
 
-if (cmp test-results test-results-new > /dev/null)
+if (cmp results-expected results-obtained > /dev/null)
 then
-	rm test-results-new
+	rm results-obtained
 else
-	git diff --no-index test-results test-results-new
+	git diff --no-index results-expected results-obtained
 fi
