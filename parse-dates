@@ -223,10 +223,29 @@ local match = date_pattern:match(input)
 
 normalize.consumed(match, input)
 
-for k,v in pairs({ 'date', 'en', 'day', 'date_en', 'date_ymd', 'interval' }) do
-	normalize[v](match[1])
-	if match[2] then
-		normalize[v](match[2])
+local interval_only = false
+if match[2] then
+	interval_only = true
+	for k, _ in pairs(match[2]) do
+		if k ~= 'interval' then
+			interval_only = false
+			break
+		end
+	end
+end
+
+if interval_only then
+	for k, v in pairs({ 'date', 'en', 'day', 'date_en', 'date_ymd', 'interval' }) do
+		normalize[v](match[1])
+	end
+	match[2]._date = match[1]._date
+	normalize['interval'](match[2])
+else
+	for k, v in pairs({ 'date', 'en', 'day', 'date_en', 'date_ymd', 'interval' }) do
+		normalize[v](match[1])
+		if match[2] then
+			normalize[v](match[2])
+		end
 	end
 end
 
