@@ -2,30 +2,13 @@
 
 local R = require "re"
 local J = require "cjson"
-local Month = {
-	jan = 1,
-	feb = 2,
-	mar = 3,
-	apr = 4,
-	may = 5,
-	jun = 6,
-	jul = 7,
-	aug = 8,
-	sep = 9,
-	oct = 10,
-	nov = 11,
-	dec = 12,
+
+local month_by_name = {
+	jan = 1, feb = 2, mar = 3, apr = 4, may = 5, jun = 6,
+	jul = 7, aug = 8, sep = 9, oct = 10, nov = 11, dec = 12
 }
 
-local Day = {
-	sun = 1,
-	mon = 2,
-	tue = 3,
-	wed = 4,
-	thu = 5,
-	fri = 6,
-	sat = 7,
-}
+local day_by_name = { sun = 1, mon = 2, tue = 3, wed = 4, thu = 5, fri = 6, sat = 7 }
 
 local input = string.lower(table.concat(arg, " "))
 
@@ -125,9 +108,7 @@ local normalize = {
 	end,
 
 	en = function (m)
-		if m.en == nil then
-			return
-		end
+		if not m.en then return end
 
 		m._date = os.date('*t')
 
@@ -140,12 +121,10 @@ local normalize = {
 	end,
 
 	day = function (m)
-		if m.day == nil then
-			return
-		end
+		if not m.day then return end
 
 		local now = os.date('*t')
-		local target, today = Day[m.day.day_en], now.wday
+		local target, today = day_by_name[m.day.day_en], now.wday
 
 		-- we want to add delta days
 		local delta = target - today
@@ -175,9 +154,7 @@ local normalize = {
 	end,
 
 	date_ymd = function (m)
-		if m.date_ymd == nil then
-			return
-		end
+		if not m.date_ymd then return end
 
 		m._date = os.date('*t')
 		local d, _d = m.date_ymd, m._date
@@ -189,15 +166,13 @@ local normalize = {
 	end,
 
 	date_en = function (m)
-		if m.date_en == nil then
-			return
-		end
+		if not m.date_en then return end
 
 		m._date = os.date('*t')
 
 		local d, _d = m.date_en, m._date
 		_d.day = d.day_num
-		_d.month = Month[d.mon_en]
+		_d.month = month_by_name[d.mon_en]
 		if d.year then
 			_d.year = d.year
 		end
