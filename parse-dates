@@ -1,7 +1,6 @@
 #!/usr/bin/env luajit
 
 local R = require "re"
-local J = require "cjson"
 
 local month_by_name = {
 	jan = 1, feb = 2, mar = 3, apr = 4, may = 5, jun = 6,
@@ -231,5 +230,16 @@ for k,v in pairs({ 'date', 'en', 'day', 'date_en', 'date_ymd', 'interval' }) do
 	end
 end
 
-print (J.encode(match))
+local t1, t2 = os.time(match[1]._date), os.time(match[2]._date) 
+if t1 > t2 then
+	t1, t2 = t2, t1
+end
+
+t2 = os.date('%Y-%m-%d', t2)
+local t = t1
+repeat 
+	t1 = os.date('%Y-%m-%d', t)
+	print(t1)
+	t = t + 86400
+until t1 == t2
 
