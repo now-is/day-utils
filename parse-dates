@@ -230,13 +230,19 @@ for k,v in pairs({ 'date', 'en', 'day', 'date_en', 'date_ymd', 'interval' }) do
 	end
 end
 
-local t1, t2 = os.time(match[1]._date), os.time(match[2]._date) 
-if t1 > t2 then
-	t1, t2 = t2, t1
+local t = os.time(match[1]._date)
+local t1, t2
+
+if match[2] then
+	t2 = os.time(match[2]._date)
+	if t > t2 then
+		t2, t = t, t2
+	end
+	t2 = os.date('%Y-%m-%d', t2)
+else
+	t2 = os.date('%Y-%m-%d', t)
 end
 
-t2 = os.date('%Y-%m-%d', t2)
-local t = t1
 repeat 
 	t1 = os.date('%Y-%m-%d', t)
 	print(t1)
