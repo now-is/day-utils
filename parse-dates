@@ -103,7 +103,7 @@ local normalize = {
 				io.stderr:write('Giving up.\n')
 				os.exit(-1)
 			else
-				io.stderr:write('Trying "' .. input:sub(1, mm.consumed -1) .. '"\n')
+				io.stderr:write('Trying "' .. input:sub(1, mm.consumed - 1) .. '"\n')
 			end
 		end
 		mm.consumed = nil
