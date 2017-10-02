@@ -241,7 +241,7 @@ for _, f in pairs(normalize) do
 end
 
 if interval_only then
-	match[2]._date = match[1]._date
+	match[2]._date = os.date('*t', os.time(match[1]._date))
 	normalize[6](match[2])
 elseif match[2] then
 	for _, f in pairs(normalize) do
