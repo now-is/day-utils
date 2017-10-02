@@ -1,0 +1,18 @@
+#!/usr/bin/env luajit
+
+local fmt = table.concat(arg, ' ')
+
+if #fmt == 0 then
+	fmt = '%Y-%m-%d'
+end
+
+while true do
+	local d = io.read()
+	if d == nil then break end
+	print(os.date(fmt, os.time{
+		year = 0 + d:sub(1, 4),
+		month = 0 + d:sub(6, 7),
+		day = 0 + d:sub(9, 10),
+	}))
+end
+
