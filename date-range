@@ -142,7 +142,6 @@ local normalize = {
 			end
 		end
 
-		m._message = 'adding ' .. delta .. ' days'
 		m._date = plus_days(now, delta)
 		m.day = nil
 	end,
