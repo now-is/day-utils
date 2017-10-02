@@ -109,9 +109,9 @@ local normalize = {
 		m._date = os.date('*t')
 
 		if m.en == 'yesterday' then
-			m._date.day = m._date.day - 1
+			m._date = plus_days(m._date, -1)
 		elseif m.en == 'tomorrow' then
-			m._date.day = m._date.day + 1
+			m._date = plus_days(m._date, 1)
 		end
 		m.en = nil
 	end,
