@@ -1,18 +1,18 @@
 #!/bin/sh
 
-fmt=%Y-%m-%d
+F=+%Y-%m-%d
 
 echo :Yesterday
-echo 2017-10-15
+date -v-1d $F
 
 echo :
-echo 2017-10-16
+date $F
 
 echo :Today
-echo 2017-10-16
+date $F
 
 echo :Tomorrow
-echo 2017-10-17
+date -v+1d $F
 
 echo :Sunday
 echo 2017-10-22
@@ -39,48 +39,48 @@ echo :Next 3rd Wed
 echo 2017-11-01
 
 echo :+ 17 days
-echo 2017-11-02
+date -v+17d $F
 
 echo :+ 17 day
-echo 2017-11-02
+date -v+17d $F
 
 echo :+ 17 d
-echo 2017-11-02
+date -v+17d $F
 
 echo :- 4 months
-echo 2017-06-16
+date -v-4m $F
 
 echo :- 4 month
-echo 2017-06-16
+date -v-4m $F
 
 echo :- 4 m
-echo 2017-06-16
+date -v-4m $F
 
 echo :+ 2 weeks
-echo 2017-10-30
+date -v+14d $F
 
 echo :+ 2 week
-echo 2017-10-30
+date -v+14d $F
 
 echo :+ 2 w
-echo 2017-10-30
+date -v+14d $F
 
 echo :- 1 years
-echo 2016-10-16
+date -v-1y $F
 
 echo :- 1 year
-echo 2016-10-16
+date -v-1y $F
 
 echo :- 1 y
-echo 2016-10-16
+date -v-1y $F
 
 echo :yesterday + 17 days
-echo 2017-11-01
+date -v+16d $F
 
 echo :tomorrow - 4 months
 echo 2017-06-17
 
 echo :today - 1 year
-echo 2016-10-16
+date -v-1y $F
 
 cat results-expected-fixed
