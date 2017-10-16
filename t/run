@@ -1,3 +1,5 @@
+cd `dirname $0`
+
 ./gen-results-expected > results-expected
 
 grep '^> ' results-expected | cut -c3- | while read l
