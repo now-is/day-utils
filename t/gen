@@ -2,6 +2,17 @@
 
 F=+%Y-%m-%d
 
+function nearest_dow () {
+	local d=0
+	local sign=${2:-+}
+	while [ $(date -v$sign${d}d +%u) -ne $1 ]
+	do
+		d=$((d+1))
+	done
+	date -v$sign${d}d $F
+}
+
+
 echo :Yesterday
 date -v-1d $F
 
@@ -15,25 +26,25 @@ echo :Tomorrow
 date -v+1d $F
 
 echo :Sunday
-echo 2017-10-22
+nearest_dow 7
 
 echo :This Saturday
-echo 2017-10-21
+nearest_dow 6
 
 echo :That Saturday
 echo Giving up.
 
 echo :Next Thursday
-echo 2017-10-19
+nearest_dow 4
 
 echo :Last ThuRSday
-echo 2017-10-12
+nearest_dow 4 -
 
 echo :Last Wed
-echo 2017-10-11
+nearest_dow 3 -
 
 echo :Last 1st Wed
-echo 2017-10-11
+nearest_dow 3 -
 
 echo :Next 3rd Wed
 echo 2017-11-01
