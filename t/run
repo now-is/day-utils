@@ -2,11 +2,10 @@ cd `dirname $0`
 
 ./gen-results-expected > results-expected
 
-grep '^: ' results-expected | cut -c3- | while read l
+grep ^: results-expected | cut -c2- | while read l
 do
-	echo ': '$l
+	echo :$l
 	../date-range $l 2>&1
-	echo
 done > results-obtained
 
 if (cmp results-expected results-obtained > /dev/null)

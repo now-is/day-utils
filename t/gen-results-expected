@@ -2,86 +2,85 @@
 
 fmt=%Y-%m-%d
 
-echo : Yesterday
+echo :Yesterday
 echo 2017-10-15
-echo 
-echo :\ 
+
+echo :
 echo 2017-10-16
-echo 
-echo : Today
+
+echo :Today
 echo 2017-10-16
-echo 
-echo : Tomorrow
+
+echo :Tomorrow
 echo 2017-10-17
-echo 
-echo : Sunday
+
+echo :Sunday
 echo 2017-10-22
-echo 
-echo : This Saturday
+
+echo :This Saturday
 echo 2017-10-21
-echo 
-echo : That Saturday
+
+echo :That Saturday
 echo Giving up.
-echo 
-echo : Next Thursday
+
+echo :Next Thursday
 echo 2017-10-19
-echo 
-echo : Last ThuRSday
+
+echo :Last ThuRSday
 echo 2017-10-12
-echo 
-echo : Last Wed
+
+echo :Last Wed
 echo 2017-10-11
-echo 
-echo : Last 1st Wed
+
+echo :Last 1st Wed
 echo 2017-10-11
-echo 
-echo : Next 3rd Wed
+
+echo :Next 3rd Wed
 echo 2017-11-01
-echo 
-echo : + 17 days
+
+echo :+ 17 days
 echo 2017-11-02
-echo 
-echo : + 17 day
+
+echo :+ 17 day
 echo 2017-11-02
-echo 
-echo : + 17 d
+
+echo :+ 17 d
 echo 2017-11-02
-echo 
-echo : - 4 months
+
+echo :- 4 months
 echo 2017-06-16
-echo 
-echo : - 4 month
+
+echo :- 4 month
 echo 2017-06-16
-echo 
-echo : - 4 m
+
+echo :- 4 m
 echo 2017-06-16
-echo 
-echo : + 2 weeks
+
+echo :+ 2 weeks
 echo 2017-10-30
-echo 
-echo : + 2 week
+
+echo :+ 2 week
 echo 2017-10-30
-echo 
-echo : + 2 w
+
+echo :+ 2 w
 echo 2017-10-30
-echo 
-echo : - 1 years
+
+echo :- 1 years
 echo 2016-10-16
-echo 
-echo : - 1 year
+
+echo :- 1 year
 echo 2016-10-16
-echo 
-echo : - 1 y
+
+echo :- 1 y
 echo 2016-10-16
-echo 
-echo : yesterday + 17 days
+
+echo :yesterday + 17 days
 echo 2017-11-01
-echo 
-echo : tomorrow - 4 months
+
+echo :tomorrow - 4 months
 echo 2017-06-17
-echo 
-echo : today - 1 year
+
+echo :today - 1 year
 echo 2016-10-16
-echo 
 
 cat results-expected-fixed

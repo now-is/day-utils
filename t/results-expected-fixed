@@ -1,91 +1,64 @@
-: June 1
+:June 1
 2017-06-01
-
-: June 5fth
+:June 5fth
 Trying "june 5"
 2017-06-05
-
-: June 5fth 1911
+:June 5fth 1911
 Trying "june 5"
 2017-06-05
-
-: next 8th august - 4 m
+:next 8th august - 4 m
 Giving up.
-
-: December 33
+:December 33
 Trying "december 3"
 2017-12-03
-
-: December 31
+:December 31
 2017-12-31
-
-: December 31, 199
+:December 31, 199
 Trying "december 31"
 2017-12-31
-
-: 12 NOveMber 1962
+:12 NOveMber 1962
 1962-11-12
-
-: November 1962
+:November 1962
 Trying "november 19"
 2017-11-19
-
-: Jul 07, 2011
+:Jul 07, 2011
 2011-07-07
-
-: Febuary 12, 2007
+:Febuary 12, 2007
 Giving up.
-
-: February 12, 2007
+:February 12, 2007
 2007-02-12
-
-: February 12, 2007, a great day
+:February 12, 2007, a great day
 Trying "february 12 2007"
 2007-02-12
-
-: What a day
+:What a day
 Giving up.
-
-: 2017-01-01 + 17 day
+:2017-01-01 + 17 day
 2017-01-18
-
-: sep 18 + 17 d
+:sep 18 + 17 d
 2017-10-05
-
-: 1969-07-23 - 4 month
+:1969-07-23 - 4 month
 1969-03-23
-
-: 1 february + 2 weeks
+:1 february + 2 weeks
 2017-02-15
-
-: 1999-12-31 + 2 week
+:1999-12-31 + 2 week
 2000-01-14
-
-: march 15 + 2 w
+:march 15 + 2 w
 2017-03-29
-
-: sep 18 - 1 years
+:sep 18 - 1 years
 2016-09-18
-
-: jan 3rd 2018 - 1 y
+:jan 3rd 2018 - 1 y
 2017-01-03
-
-: 1969-07-23 - 11 month
+:1969-07-23 - 11 month
 1968-08-23
-
-: jan 15 2001 + 28 month
+:jan 15 2001 + 28 month
 2003-05-15
-
-: jan 15 2001 - 28 monthS
+:jan 15 2001 - 28 monthS
 1998-09-15
-
-: mar 31st 2017 + 3 months
+:mar 31st 2017 + 3 months
 2017-06-30
-
-: dec 29 1999 + 2 months
+:dec 29 1999 + 2 months
 2000-02-29
-
-: June 5 .. aug 12
+:June 5 .. aug 12
 2017-06-05
 2017-06-06
 2017-06-07
@@ -155,8 +128,7 @@ Giving up.
 2017-08-10
 2017-08-11
 2017-08-12
-
-: oct 10, 2017 .. - 6 days
+:oct 10, 2017 .. - 6 days
 2017-10-04
 2017-10-05
 2017-10-06
@@ -164,8 +136,7 @@ Giving up.
 2017-10-08
 2017-10-09
 2017-10-10
-
-: sep 18 .. + 17 d
+:sep 18 .. + 17 d
 2017-09-18
 2017-09-19
 2017-09-20
@@ -184,13 +155,11 @@ Giving up.
 2017-10-03
 2017-10-04
 2017-10-05
-
-: sep 18 .. sep 3 + 17 d
+:sep 18 .. sep 3 + 17 d
 2017-09-18
 2017-09-19
 2017-09-20
-
-: 2017-09-15 .. + 1 m
+:2017-09-15 .. + 1 m
 2017-09-15
 2017-09-16
 2017-09-17
@@ -222,4 +191,3 @@ Giving up.
 2017-10-13
 2017-10-14
 2017-10-15
-
