@@ -1,6 +1,6 @@
 ./gen-results-expected > results-expected
 
-cat tests | while read l
+grep '^> ' results-expected | cut -c3- | while read l
 do
 	echo '> '$l
 	../date-range $l 2>&1
@@ -9,7 +9,7 @@ done > results-obtained
 
 if (cmp results-expected results-obtained > /dev/null)
 then
-	rm results-obtained
+	rm results-expected results-obtained
 else
 	git diff --no-index results-expected results-obtained
 fi
