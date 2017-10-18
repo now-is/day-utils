@@ -40,7 +40,9 @@ for k, _ in pairs(format) do
 	i = i + 1
 	patterns[i] = "'" .. string.lower(k) .. "'"
 end
-table.sort(patterns)
+
+table.sort(patterns, function (a,b) return (a > b) end)
+
 patterns = R.compile([[ {|
 	KWS <- KW KWS / {}
 	KW  <- {} { ]] .. table.concat(patterns, '/') .. [[ } / . KW
@@ -56,7 +58,7 @@ else
 	local cur, i = 1, 1
 	while i < #matched do
 		fmt = fmt .. input:sub(cur, matched[i] - 1) .. '%' .. format[matched[i+1]]
-		cur = cur + matched[i] - 1 + #matched[i+1]
+		cur = matched[i] + #matched[i+1]
 		i = i + 2
 	end
 
@@ -64,7 +66,7 @@ else
 		fmt = fmt .. input:sub(matched[i])
 	end
 end
-print(fmt)
+
 while true do
 	local d = io.read()
 	if d == nil then break end
