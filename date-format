@@ -1,24 +1,23 @@
 #!/usr/bin/env luajit
 
 local R = require 're'
-local J = require 'cjson'
 
 local format = {
-	ampm = 'p',
+	-- ampm = 'p',
 	daylong = 'd',
 	dayshort = 'd',
 	epoch = 's',
-	hour12long = 'I',
-	hour12short = 'I',
-	hour24long = 'H',
-	hour24short = 'H',
-	minute = 'M',
+	-- hour12long = 'I',
+	-- hour12short = 'I',
+	-- hour24long = 'H',
+	-- hour24short = 'H',
+	-- minute = 'M',
 	monthlong = 'm',
 	monthnamelong = 'B',
 	monthnameshort = 'b',
 	monthshort = 'm',
 	newline = 'n',
-	second = 'S',
+	-- second = 'S',
 	tab = 't',
 	timezone = 'Z',
 	weekday = 'u',
@@ -30,8 +29,8 @@ local format = {
 
 local wipe_zero = {
 	dayshort = true,
-	hour12short = true,
-	hour24short = true,
+	-- hour12short = true,
+	-- hour24short = true,
 	monthshort = true,
 }
 
