@@ -34,6 +34,14 @@ local wipe_zero = {
 	monthshort = true,
 }
 
+local input = table.concat(arg, ' ')
+if input == 'menu' then
+	for k, _ in pairs(format) do
+		print(k)
+	end
+	os.exit()
+end
+
 local patterns, i = {}, 0
 for k, _ in pairs(format) do
 	i = i + 1
@@ -47,7 +55,6 @@ patterns = R.compile([[ {|
 	KW  <- {} { ]] .. table.concat(patterns, '/') .. [[ } / . KW
 |} ]])
 
-local input = table.concat(arg, ' ')
 local matched = patterns:match(string.lower(input))
 local fmt = ''
 
