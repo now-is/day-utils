@@ -5,7 +5,7 @@ cd `dirname $0`
 grep ^: results-expected | cut -c2- | while read l
 do
 	echo :$l
-	../date-range $l 2>&1
+	../day-range $l 2>&1
 done > results-obtained
 
 if (cmp results-expected results-obtained > /dev/null)
