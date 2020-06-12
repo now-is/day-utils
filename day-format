@@ -1,7 +1,6 @@
 #!/usr/bin/env lua
 
 local R = require 're'
-local J = require 'cjson'
 
 local format_pattern = R.compile [[
 
@@ -9,14 +8,13 @@ local format_pattern = R.compile [[
 
 	seg <- {|
 		{}
-		( epoch 
-		/ year 
-		/ day_long_ordinal 
-		/ day_short_ordinal 
-		/ day_long 
-		/ month 
+		( epoch
+		/ year
+		/ day_long_ordinal
+		/ day_short_ordinal
+		/ day_long
+		/ month
 		/ day_short
-
 		/ month_en_long
 		/ day_en_long
 		/ month_en_short
@@ -55,79 +53,78 @@ local format_pattern = R.compile [[
 	ordinal_suffix <-
 		'st' / 'nd' / 'rd' / 'th'
 
+	-- words
 	month_en_long <- {~
-		( [Jj]'anuary'
-		/ [Ff]'ebruary'
-		/ [Mm]'arch'
-		/ [Aa]'pril'
-		/ [Mm]'ay'
-		/ [Jj]'une'
-		/ [Jj]'uly'
-		/ [Aa]'ugust'
-		/ [Ss]'eptember'
-		/ [Oo]'ctober'
-		/ [Nn]'ovember'
-		/ [Dd]'ecember'
+		( [Jj]'anuary' / [Ff]'ebruary' / [Mm]'arch' / [Aa]'pril'
+		/ [Mm]'ay' / [Jj]'une' / [Jj]'uly' / [Aa]'ugust'
+		/ [Ss]'eptember' / [Oo]'ctober' / [Nn]'ovember' / [Dd]'ecember'
 		) -> 'month_en_long'
 	~}
 
 	month_en_short <- {~
-		( [Jj]'an'
-		/ [Ff]'eb'
-		/ [Mm]'ar'
-		/ [Aa]'pr'
-		/ [Mm]'ay'
-		/ [Jj]'un'
-		/ [Jj]'ul'
-		/ [Aa]'ug'
-		/ [Ss]'ep'
-		/ [Oo]'ct'
-		/ [Nn]'ov'
-		/ [Dd]'ec'
+		( [Jj]'an' / [Ff]'eb' / [Mm]'ar' / [Aa]'pr'
+		/ [Mm]'ay' / [Jj]'un' / [Jj]'ul' / [Aa]'ug'
+		/ [Ss]'ep' / [Oo]'ct' / [Nn]'ov' / [Dd]'ec'
 		) -> 'month_en_short'
 	~}
 
 	day_en_long <- {~
-		( [Ss]'unday'
-		/ [Mm]'onday'
-		/ [Tt]'uesday'
-		/ [Ww]'ednesday'
-		/ [Tt]'hursday'
-		/ [Ff]'riday'
-		/ [Ss]'aturday'
+		( [Ss]'unday' / [Mm]'onday' / [Tt]'uesday' / [Ww]'ednesday'
+		/ [Tt]'hursday' / [Ff]'riday' / [Ss]'aturday'
 		) -> 'day_en_long'
 	~}
 
 	day_en_short <- {~
-		( [Ss]'un'
-		/ [Mm]'on'
-		/ [Tt]'ue'
-		/ [Ww]'ed'
-		/ [Tt]'hu'
-		/ [Ff]'ri'
-		/ [Ss]'at'
+		( [Ss]'un' / [Mm]'on' / [Tt]'ue' / [Ww]'ed'
+		/ [Tt]'hu' / [Ff]'ri' / [Ss]'at'
 		) -> 'day_en_short'
 	~}
+
 ]]
 
-local handler = {
-	epoch             = function (t) return os.date('%s', t) end,
-	year              = function (t) return os.date('%Y', t) end,
-	day_long_ordinal  = function (t) return os.date('%dTH', t) end,
-	day_short_ordinal = function (t) return os.date('%dTH', t) end,
-	day_long          = function (t) return os.date('%d', t) end,
-	month             = function (t) return os.date('%m', t) end,
-	day_short         = function (t) return os.date('%d', t) end,
-	month_en_long     = function (t) return os.date('%B', t) end,
+-- formatters
+function ordinal_en (i)
+	local suffix = 'th'
+	local unit = i:sub(#i)
+
+	if #i == 1 or i:sub(#i-1,1) ~= '1' then
+		if unit == '1' then
+			suffix = 'st'
+		elseif unit == '2' then
+			suffix = 'nd'
+		elseif unit == '3' then
+			suffix = 'rd'
+		end
+	end
+	return i .. suffix
+end
+
+function short_form (i)
+	while #i > 1 and i:sub(1,1) == '0' do
+		i = i:sub(2)
+	end
+	return i
+end
+
+local formatter = {
 	day_en_long       = function (t) return os.date('%A', t) end,
-	month_en_short    = function (t) return os.date('%b', t) end,
 	day_en_short      = function (t) return os.date('%a', t) end,
+	day_long          = function (t) return os.date('%d', t) end,
+	day_long_ordinal  = function (t) return ordinal_en(os.date('%d', t)) end,
+	day_short         = function (t) return short_form(os.date('%d', t)) end,
+	day_short_ordinal = function (t) return ordinal_en(short_form(os.date('%d', t))) end,
+	epoch             = function (t) return os.date('%s', t) end,
+	month_en_long     = function (t) return os.date('%B', t) end,
+	month_en_short    = function (t) return os.date('%b', t) end,
+	month             = function (t) return os.date('%m', t) end,
+	year              = function (t) return os.date('%Y', t) end,
 }
 
+-- main
 local input = table.concat(arg, ' ')
-local match = format_pattern:match(input)
+local parsed = format_pattern:match(input)
 
-print(J.encode(match))
+-- print((require'cjson').encode({input=input,parsed=parsed}))os.exit()
 
 while true do
 	local d = io.read()
@@ -142,12 +139,12 @@ while true do
 	local out = {}
 	local cur = 1
 
-	for _, seg in ipairs(match) do
+	for _, seg in ipairs(parsed) do
 		if cur < seg[1] then
 			out[#out+1] = input:sub(cur, seg[1]-1)
 		end
 
-		out[#out+1] = handler[seg[2]](t)
+		out[#out+1] = formatter[seg[2]](t)
 
 		cur = seg[3]
 	end
@@ -156,4 +153,3 @@ while true do
 	end
 	print(table.concat(out))
 end
-
