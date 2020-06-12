@@ -110,7 +110,50 @@ local format_pattern = R.compile [[
 	~}
 ]]
 
+local handler = {
+	epoch             = function (t) return os.date('%s', t) end,
+	year              = function (t) return os.date('%Y', t) end,
+	day_long_ordinal  = function (t) return os.date('%dTH', t) end,
+	day_short_ordinal = function (t) return os.date('%dTH', t) end,
+	day_long          = function (t) return os.date('%d', t) end,
+	month             = function (t) return os.date('%m', t) end,
+	day_short         = function (t) return os.date('%d', t) end,
+	month_en_long     = function (t) return os.date('%B', t) end,
+	day_en_long       = function (t) return os.date('%A', t) end,
+	month_en_short    = function (t) return os.date('%b', t) end,
+	day_en_short      = function (t) return os.date('%a', t) end,
+}
+
 local input = table.concat(arg, ' ')
 local match = format_pattern:match(input)
 
 print(J.encode(match))
+
+while true do
+	local d = io.read()
+	if d == nil then break end
+
+	local t = os.time{
+		year = 0 + d:sub(1, 4),
+		month = 0 + d:sub(6, 7),
+		day = 0 + d:sub(9, 10),
+	}
+
+	local out = {}
+	local cur = 1
+
+	for _, seg in ipairs(match) do
+		if cur < seg[1] then
+			out[#out+1] = input:sub(cur, seg[1]-1)
+		end
+
+		out[#out+1] = handler[seg[2]](t)
+
+		cur = seg[3]
+	end
+	if cur < #input-1 then
+		out[#out+1] = input:sub(cur, #input)
+	end
+	print(table.concat(out))
+end
+
