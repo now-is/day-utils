@@ -100,10 +100,7 @@ function ordinal_en (i)
 end
 
 function short_form (i)
-	while #i > 1 and i:sub(1,1) == '0' do
-		i = i:sub(2)
-	end
-	return i
+	return i:gsub('^0*', '')
 end
 
 local formatter = {
