@@ -2,13 +2,15 @@
 
 day-utils are two command line tools: day-range outputs a sequence of consecutive dates, day-format rewrites dates in various formats.
 
+A simple filter for lines in arithmetic progression is included.
+
 ## Prerequisites
 
 [lua 5.1+](https://www.lua.org/) or [luajit 2.0.5](http://luajit.org/), the [LPeg](http://www.inf.puc-rio.br/~roberto/lpeg/) library.
 
 ## Installation
 
-Copy `day-range` and `day-format` somewhere in your path, edit their first lines if necessary, make them executable.
+Copy `day-range`, `day-format`, and, if you wish, `lines`, somewhere in your path, edit their first lines if necessary, and make them executable.
 
 ## Usage: day-range
 
@@ -63,3 +65,20 @@ Note:
 * Any ordinal suffix works with any qualifying numeral: `1th`, `9rd`, `22st` are valid
 * All-lowercase versions of month and day names also work and have the same meaning
 
+## Usage: lines
+
+```bash
+lines 9 2 6
+```
+
+copies lines numbered 2, 6, 11, 15, 18, ... from `stdin` to `stdout`. In general, `lines m n1 n2 n3` prints lines numbered `n1 mod m`, `n2 mod m`, `n3 mod m`.
+
+There is no attempt to limit the number of command line arguments. The advantage here is the simplicity of invocation.
+
+Example:
+
+```bash
+day-range next friday .. dec 31 | lines 7 1 2
+```
+
+prints all Fridays and Saturdays from the coming week through the end of the year.
