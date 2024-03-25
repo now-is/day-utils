@@ -1,6 +1,14 @@
 # day-utils
 
-day-utils are two command line tools: day-range outputs a sequence of consecutive dates, day-format rewrites dates in various formats.
+You landed a gig. Your band will play Fridays and Saturdays, now through the end of the year. You want to send these dates to the newspaper, and they insist on their strict format.
+
+This is not at all stressful, if you have day-utils.
+
+```bash
+day-range next friday .. dec 31 | lines 7 1 2 | day-format Friday, October 31st
+```
+
+day-utils are principally two command line tools: day-range outputs a sequence of consecutive dates, and day-format rewrites dates in various formats.
 
 A simple filter for lines in arithmetic progression is included.
 
